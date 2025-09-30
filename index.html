@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Bapak!</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif;}
+body{overflow:hidden;height:100vh;display:flex;justify-content:center;align-items:center;transition:background 2s ease;}
+.dark-mode{background:#000;color:#fff;}
+.light-mode{background: linear-gradient(45deg, #ff6b6b, #ffd93d, #ff8e53);color:#333;animation:bgAnimation 5s ease infinite alternate;}
+@keyframes bgAnimation{
+  0%{background: linear-gradient(45deg, #ff6b6b, #ffd93d, #ff8e53);}
+  50%{background: linear-gradient(45deg, #ffd93d, #ff8e53, #ff6b6b);}
+  100%{background: linear-gradient(45deg, #ff8e53, #ff6b6b, #ffd93d);}
+}
+.container{text-align:center;width:100%;max-width:800px;padding:20px;}
+.lamp-icon{font-size:50px;cursor:pointer;opacity:0.5;animation:flicker 2s infinite;}
+.lamp-icon:hover{opacity:1;}
+@keyframes flicker{0%,100%{opacity:0.5;}50%{opacity:1;}}
+.instruction{margin-top:20px;font-size:18px;opacity:0.7;}
+.cake-wrapper{position:relative;display:inline-block;margin:40px 0;width:200px;}
+#kue{font-size:120px;display:block;position:relative;z-index:1;}
+.candle{position:absolute;top:-40px;font-size:40px;animation:flame 1s infinite alternate;text-shadow:0 0 10px #ffeb3b;cursor:pointer;}
+#lilin1{left:40px;}
+#lilin2{right:40px;}
+.candle.off{color:#ccc;text-shadow:none;animation:none;}
+@keyframes flame{0%{transform:scale(1);}100%{transform:scale(1.2);}}
+.smoke{position:absolute;top:-30px;left:50%;transform:translateX(-50%);font-size:30px;opacity:0;animation:puff 2s ease-out;pointer-events:none;}
+@keyframes puff{0%{opacity:1;transform:translateX(-50%) translateY(0) scale(1);}100%{opacity:0;transform:translateX(-50%) translateY(-50px) scale(2);}}
+.input-instruction{font-size:20px;margin:20px 0;background:rgba(255,255,255,0.8);padding:10px;border-radius:10px;}
+input[type="text"]{padding:10px;font-size:18px;border:2px solid #ff6b6b;border-radius:5px;margin-top:10px;width:200px;}
+.gift{font-size:80px;cursor:pointer;margin:20px 0;display:none;animation:sparkle 1s infinite;}
+@keyframes sparkle{0%,100%{transform:scale(1);}50%{transform:scale(1.05);}}
+.popup{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(255,255,255,0.95);padding:30px;border-radius:15px;box-shadow:0 10px 30px rgba(0,0,0,0.5);max-width:90%;z-index:1000;animation:pop 0.5s ease;}
+@keyframes pop{0%{transform:translate(-50%,-50%) scale(0);}100%{transform:translate(-50%,-50%) scale(1);}}
+.close-btn{background:#ff6b6b;color:white;border:none;padding:10px 20px;border-radius:5px;cursor:pointer;margin-top:20px;}
+.foto-section{display:none;animation:zoomIn 1s ease;}
+@keyframes zoomIn{0%{transform:scale(0.5);opacity:0;}100%{transform:scale(1);opacity:1;}}
+.foto-bapak{width:300px;height:300px;border-radius:50%;object-fit:cover;border:5px solid #ffd93d;box-shadow:0 0 20px rgba(255,217,61,0.5);margin:20px 0;}
+.ucapan-puncak{font-size:24px;font-weight:bold;margin:20px 0;background:rgba(255,255,255,0.8);padding:20px;border-radius:10px;}
+.confetti{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:999;}
+.particle{position:absolute;width:10px;height:10px;background:#ff6b6b;animation:fall 3s linear infinite;}
+@keyframes fall{0%{transform:translateY(-100vh) rotate(0deg);opacity:1;}100%{transform:translateY(100vh) rotate(360deg);opacity:0;}}
+.footer{position:fixed;bottom:10px;left:50%;transform:translateX(-50%);font-size:12px;color:#666;text-align:center;z-index:1;}
+@media (max-width:600px){
+  #kue{font-size:80px;}
+  .gift{font-size:50px;}
+  .foto-bapak{width:200px;height:200px;}
+  .input-instruction{font-size:16px;}
+  input[type="text"]{width:150px;}
+}
+</style>
+</head>
+<body class="dark-mode">
+<div class="container">
+    <!-- Adegan 1: Lampu -->
+    <div id="adegan1">
+        <div class="lamp-icon" id="lampu">💡</div>
+        <p class="instruction">KLIK LAMPU UNTUK MEMULAI PETUALANGAN!</p>
+    </div>
+
+    <!-- Adegan 2: Kue + Lilin -->
+    <div id="adegan2" style="display:none;">
+        <div class="cake-wrapper">
+            <div id="lilin1" class="candle">🕯</div>
+            <div id="lilin2" class="candle">🕯</div>
+            <div id="kue">🎂</div>
+        </div>
+        <p class="input-instruction">Selamat Ulang Tahun, Pak! Ketik 'PUH' tiga kali untuk mematikan lilin.</p>
+        <input type="text" id="inputTiup" placeholder="Ketik PUH di sini..." maxlength="3" autocomplete="off">
+        <p id="counter" style="display:none;">Sudah tiup: <span id="count">0</span>/3</p>
+    </div>
+
+    <!-- Adegan 3: Kado -->
+    <div id="adegan3" style="display:none;">
+        <div id="kado1" class="gift">🎁</div>
+        <div id="kado2" class="gift">🎁</div>
+    </div>
+
+    <!-- Adegan 4: Foto -->
+    <div id="adegan4" class="foto-section">
+        <img class="foto-bapak" src="img/bpk.jpg" alt="Foto Bapak"
+             onerror="this.onerror=null;this.src='https://via.placeholder.com/300x300/ff6b6b/ffffff?text=Foto+Bapak';">
+        <p class="ucapan-puncak">Bapak, selamat ulang tahun ke-45! Aku sangat mencintai Bapak dan berharap Bapak selalu sehat, bahagia, dan penuh berkah.</p>
+    </div>
+
+    <!-- Popup Ucapan -->
+    <div id="popup" class="popup">
+        <div id="popupContent"></div>
+        <button class="close-btn" onclick="tutupPopup()">Kado Selanjutnya</button>
+    </div>
+</div>
+
+<div id="confetti" class="confetti"></div>
+<div class="footer">Dibuat dengan cinta untuk Bapak tercinta. Selamat ulang tahun!</div>
+
+<script>
+const audioJingle=new Audio('happy-birthday.mp3'); 
+const audioTiup=new Audio('blow.mp3'); 
+let countTiup=0;
+let currentKado=0;
+
+function buatConfetti(intensity=50){
+    const confetti=document.getElementById('confetti');
+    confetti.innerHTML='';
+    for(let i=0;i<intensity;i++){
+        const p=document.createElement('div');
+        p.className='particle';
+        p.style.left=Math.random()*100+'vw';
+        p.style.background=`hsl(${Math.random()*360},70%,60%)`;
+        p.style.animationDelay=Math.random()*3+'s';
+        p.style.animationDuration=(Math.random()*3+2)+'s';
+        confetti.appendChild(p);
+    }
+    setTimeout(()=>{confetti.innerHTML='';},5000);
+}
+
+// Klik lampu
+document.getElementById('lampu').addEventListener('click',()=>{
+    document.body.classList.remove('dark-mode');
+    document.body.classList.add('light-mode');
+    document.getElementById('adegan1').style.display='none';
+    document.getElementById('adegan2').style.display='block';
+    buatConfetti(30);
+    audioJingle.play().catch(()=>{});
+});
+
+// Tiup lilin
+const inputTiup=document.getElementById('inputTiup');
+inputTiup.addEventListener('input',function(e){
+    if(e.target.value.toUpperCase().trim()==='PUH'){
+        countTiup++;
+        audioTiup.play().catch(()=>{});
+        if(countTiup===1) document.getElementById('lilin1').classList.add('off'), buatAsap();
+        if(countTiup===2) document.getElementById('lilin2').classList.add('off'), buatAsap();
+        document.getElementById('count').textContent=countTiup;
+        document.getElementById('counter').style.display='block';
+        e.target.value='';
+        if(countTiup>=3){
+            setTimeout(()=>{
+                document.getElementById('adegan2').style.display='none';
+                document.getElementById('adegan3').style.display='block';
+                document.getElementById('kado1').style.display='block';
+            },1000);
+        }
+    }
+});
+
+function buatAsap(){
+    const smoke=document.createElement('div');
+    smoke.className='smoke';
+    smoke.innerHTML='💨';
+    document.querySelector('.cake-wrapper').appendChild(smoke);
+    setTimeout(()=>smoke.remove(),2000);
+}
+
+// Kado
+document.getElementById('kado1').addEventListener('click',()=>{tampilkanUcapan(1),document.getElementById('kado1').style.display='none';});
+document.getElementById('kado2').addEventListener('click',()=>{tampilkanUcapan(2),document.getElementById('kado2').style.display='none';});
+
+function tampilkanUcapan(kadoNum){
+    const popup=document.getElementById('popup');
+    const content=document.getElementById('popupContent');
+    if(kadoNum===1) content.innerHTML=`<h2>Kado Pertama: Harapan</h2><p>Bapak, selamat ulang tahun! Aku berharap Bapak selalu sehat, bahagia, dan dikelilingi cinta keluarga setiap hari.</p>`;
+    if(kadoNum===2) content.innerHTML=`<h2>Kado Kedua: Doa</h2><p>Bapak, aku mendoakan Bapak selalu diberkahi, sukses, dan senantiasa bahagia. Selamat ulang tahun ke-45!</p>`;
+    popup.style.display='block';
+    currentKado=kadoNum;
+}
+
+function tutupPopup(){
+    document.getElementById('popup').style.display='none';
+    if(currentKado===1) document.getElementById('kado2').style.display='block';
+    else if(currentKado===2){
+        document.getElementById('adegan3').style.display='none';
+        document.getElementById('adegan4').style.display='block';
+        buatConfetti(100);
+    }
+}
+
+// Keyboard listener
+document.addEventListener('keydown',function(e){
+    if(document.getElementById('adegan2').style.display!=='none'){
+        if(e.key.length===1) inputTiup.value+=e.key.toUpperCase();
+        const event=new Event('input',{bubbles:true});
+        inputTiup.dispatchEvent(event);
+    }
+});
+</script>
+</body>
+</html>
